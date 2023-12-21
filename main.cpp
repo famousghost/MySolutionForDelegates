@@ -10,7 +10,7 @@ class Manager
 public:
 
     DelegateMethod<Worker*, void(Worker::*)()> classUpdateClinetsInformation;
-    DelegateFunc<int(*)()> checkFunctionDelegate;
+    DelegateFunc<int(*)(int)> checkFunctionDelegate;
 
     DelegateFunc<void(*)()> funcUpdateClinetsInformation;
     DelegateMethod<Worker*, int(Worker::*)()> checkMethodDelegate;
@@ -29,7 +29,7 @@ public:
         }
         std::cout << "Method Delegate Sum is equal: " << sum << std::endl;
 
-        results = checkFunctionDelegate.InvokeRet();
+        results = checkFunctionDelegate.InvokeRet(5);
 
         sum = 0;
         for (int i = 0; i < results.size(); ++i)
@@ -97,14 +97,14 @@ void func3()
     std::cout << "func3()" << std::endl;
 }
 
-int Result()
+int Result(int x)
 {
-    return 10;
+    return 10 * x;
 }
 
-int Result2()
+int Result2(int x)
 {
-    return 20;
+    return 20 * x;
 }
 
 int main() {
@@ -133,6 +133,8 @@ int main() {
     manager.funcUpdateClinetsInformation.Unregister(func);
 
     worker1.UnRegisterFromWork(manager);
+
+    manager.checkFunctionDelegate.Unregister(Result2);
 
     std::cout << "---------------------------" << std::endl;
 
