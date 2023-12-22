@@ -13,6 +13,33 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Pliki źródłowe\WorkerExample">
+      <UniqueIdentifier>{4e844d67-838b-4841-97d1-1ec495066977}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\WorkerExample">
+      <UniqueIdentifier>{86af6eda-0fde-495d-acd8-7256b005704f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\CharacterExample">
+      <UniqueIdentifier>{2c3513f3-c7c1-408c-9c1c-7ebd4fad5e71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\CharacterExample\Interfaces">
+      <UniqueIdentifier>{e8da6f1f-7b6b-49f5-aa35-8caa7098658d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\CharacterExample">
+      <UniqueIdentifier>{ef428455-ae6e-4d12-b3d8-e096ba3f0ec9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\CharacterExample\Managers">
+      <UniqueIdentifier>{3668e823-8438-48d8-a70f-54ff7143ca13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\CharacterExample\Characters">
+      <UniqueIdentifier>{9cdc67d4-8c19-4cd8-b873-15ae5b99f9a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\CharacterExample\Characters">
+      <UniqueIdentifier>{23606dec-1c6d-4ef7-9542-4b1783d65087}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\CharacterExample\Managers">
+      <UniqueIdentifier>{1da2d6b4-3da4-40e8-bf89-4cfe66a0df5c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -21,10 +48,49 @@
     <ClCompile Include="Delegates.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
+    <ClCompile Include="Worker.cpp">
+      <Filter>Pliki źródłowe\WorkerExample</Filter>
+    </ClCompile>
+    <ClCompile Include="WorkerExample.cpp">
+      <Filter>Pliki źródłowe\WorkerExample</Filter>
+    </ClCompile>
+    <ClCompile Include="WorkerManager.cpp">
+      <Filter>Pliki źródłowe\WorkerExample</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterManager.cpp">
+      <Filter>Pliki źródłowe\CharacterExample\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Worrior.cpp">
+      <Filter>Pliki źródłowe\CharacterExample\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="Warlock.cpp">
+      <Filter>Pliki źródłowe\CharacterExample\Characters</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Delegates.h">
       <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="WorkerManager.h">
+      <Filter>Pliki nagłówkowe\WorkerExample</Filter>
+    </ClInclude>
+    <ClInclude Include="WorkerExample.h">
+      <Filter>Pliki nagłówkowe\WorkerExample</Filter>
+    </ClInclude>
+    <ClInclude Include="Worker.h">
+      <Filter>Pliki nagłówkowe\WorkerExample</Filter>
+    </ClInclude>
+    <ClInclude Include="Worrior.h">
+      <Filter>Pliki nagłówkowe\CharacterExample\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="ICharacter.h">
+      <Filter>Pliki nagłówkowe\CharacterExample\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterManager.h">
+      <Filter>Pliki nagłówkowe\CharacterExample\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Warlock.h">
+      <Filter>Pliki nagłówkowe\CharacterExample\Characters</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

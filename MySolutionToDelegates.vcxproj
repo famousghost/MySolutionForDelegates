@@ -139,11 +139,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CharacterManager.cpp" />
     <ClCompile Include="Delegates.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Warlock.cpp" />
+    <ClCompile Include="Worker.cpp" />
+    <ClCompile Include="WorkerExample.cpp" />
+    <ClCompile Include="WorkerManager.cpp" />
+    <ClCompile Include="Worrior.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CharacterManager.h" />
     <ClInclude Include="Delegates.h" />
+    <ClInclude Include="ICharacter.h" />
+    <ClInclude Include="Warlock.h" />
+    <ClInclude Include="Worker.h" />
+    <ClInclude Include="WorkerExample.h" />
+    <ClInclude Include="WorkerManager.h" />
+    <ClInclude Include="Worrior.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
