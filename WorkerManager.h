@@ -8,13 +8,13 @@ class WorkerManager
 {
 public:
 
-    DelegateMethod<Type*, void(Type::*)()> classUpdateClinetsInformation;
+    DelegateMethod< void(Type::*)()> classUpdateClinetsInformation;
 
     DelegateFunc<int(*)(int)> checkFunctionDelegate;
 
     DelegateFunc<void(*)()> funcUpdateClinetsInformation;
 
-    DelegateMethod<Type*, int(Type::*)(int)> checkMethodDelegate;
+    DelegateMethod<int(Type::*)(int)> checkMethodDelegate;
 
     void Update();
 };

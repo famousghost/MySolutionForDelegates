@@ -9,6 +9,17 @@ R return_type(R(*)(A...));
 template<typename C, typename R, typename... A>
 R return_type(R(C::*)(A...));
 
+template<typename T>
+struct ClassOf {};
+
+template<typename Return, typename Class, typename... Args>
+struct ClassOf < Return(Class::*)(Args...) > {
+    using type = Class;
+};
+
+template< typename T>
+using ClassOf_t = typename ClassOf<T>::type;
+
 template<typename Func>
 class DelegateFunc
 {
@@ -55,7 +66,7 @@ private:
     std::vector<Func> funcDelegates;
 };
 
-template<typename Type, typename Func>
+template<typename Func>
 class DelegateMethod
 {
 public:
@@ -85,12 +96,12 @@ public:
         return result;
     }
 
-    void Register(Type type, Func func)
+    void Register(ClassOf_t<decltype(Func())>* type, Func func)
     {
         classDelegates[type].push_back(func);
     }
 
-    void Unregister(Type type, Func func)
+    void Unregister(ClassOf_t<decltype(Func())>* type, Func func)
     {
         auto it = classDelegates.find(type);
 
@@ -106,5 +117,5 @@ public:
     }
 
 private:
-    std::map<Type, std::vector<Func>> classDelegates;
+    std::map<ClassOf_t<decltype(Func())>*, std::vector<Func>> classDelegates;
 };

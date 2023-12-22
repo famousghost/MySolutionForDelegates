@@ -6,23 +6,23 @@ class CharacterManager
 {
 public:
 
-	static CharacterManager* Instance()
-	{
-		if (m_instance == nullptr)
-		{
-			m_instance = new CharacterManager();
-		}
-		return m_instance;
-	}
+    static CharacterManager* Instance()
+    {
+        if (m_instance == nullptr)
+        {
+            m_instance = new CharacterManager();
+        }
+        return m_instance;
+    }
 
-	void Update();
-	
-	DelegateMethod<ICharacter*, void(ICharacter::*)()> UpdateCharacters;
+    void Update();
+
+    DelegateMethod<void(ICharacter::*)()> UpdateCharacters;
 private:
 
-	CharacterManager()
-	{
-	}
+    CharacterManager()
+    {
+    }
 
-	static CharacterManager* m_instance;
+    static CharacterManager* m_instance;
 };
