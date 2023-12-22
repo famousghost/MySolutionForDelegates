@@ -35,7 +35,7 @@ int main() {
     worrior.Register();
     warlock.Register();
 
-    CharacterManager<ICharacter>::Instance()->Update();
+    CharacterManager::Instance()->Update();
 
     worrior.Unregister();
     warlock.Unregister();

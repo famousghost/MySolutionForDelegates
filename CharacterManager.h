@@ -1,40 +1,28 @@
 #pragma once
 #include "Delegates.h"
+#include "ICharacter.h"
 
-template<typename Type>
 class CharacterManager
 {
 public:
 
-	static CharacterManager<Type>* Instance()
+	static CharacterManager* Instance()
 	{
 		if (m_instance == nullptr)
 		{
-			m_instance = new CharacterManager<Type>();
+			m_instance = new CharacterManager();
 		}
 		return m_instance;
 	}
 
 	void Update();
 	
-	DelegateMethod<Type*, void(Type::*)()> UpdateCharacters;
-
-
+	DelegateMethod<ICharacter*, void(ICharacter::*)()> UpdateCharacters;
 private:
 
 	CharacterManager()
 	{
 	}
 
-	static CharacterManager<Type>* m_instance;
-
+	static CharacterManager* m_instance;
 };
-
-template<typename Type>
-CharacterManager<Type>* CharacterManager<Type>::m_instance = nullptr;
-
-template<typename Type>
-inline void CharacterManager<Type>::Update()
-{
-	UpdateCharacters.Invoke();
-}

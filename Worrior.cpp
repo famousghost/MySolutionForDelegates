@@ -12,13 +12,13 @@ Worrior::Worrior(float hp, float mp, float attackPower, float damageReduction, H
 
 void Worrior::Register()
 {
-	auto* characterManager = CharacterManager<ICharacter>::Instance();
+	auto* characterManager = CharacterManager::Instance();
 	characterManager->UpdateCharacters.Register(this, &ICharacter::PrintType);
 }
 
 void Worrior::Unregister()
 {
-	auto* characterManager = CharacterManager<ICharacter>::Instance();
+	auto* characterManager = CharacterManager::Instance();
 	characterManager->UpdateCharacters.Unregister(this, &ICharacter::PrintType);
 }
 

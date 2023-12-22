@@ -9,13 +9,13 @@ Warlock::Warlock(HeroType type)
 
 void Warlock::Register()
 {
-	auto* characterManager = CharacterManager<ICharacter>::Instance();
+	auto* characterManager = CharacterManager::Instance();
 	characterManager->UpdateCharacters.Register(this, &ICharacter::PrintType);
 }
 
 void Warlock::Unregister()
 {
-	auto* characterManager = CharacterManager<ICharacter>::Instance();
+	auto* characterManager = CharacterManager::Instance();
 	characterManager->UpdateCharacters.Unregister(this, &ICharacter::PrintType);
 }
 
