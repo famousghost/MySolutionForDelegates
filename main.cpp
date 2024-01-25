@@ -39,6 +39,8 @@ int main() {
     CharacterManager::Instance()->Update();
 
     worrior.Unregister();
+    //worrior2.Unregister();
+    //warlock.Unregister();
     warlock2.Unregister();
 
     std::cout << "-------------------------------" << std::endl;

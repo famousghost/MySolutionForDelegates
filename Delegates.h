@@ -181,23 +181,11 @@ public:
             std::string str = funcDelegates[i].target_type().name();
             std::string str2 = typeid(func).name();
             std::string str3 = typeid(*type).name();
-            std::size_t pos = str.find(",");
-            std::string subString = str.substr(pos + 1);
-            subString.pop_back();
-            pos = subString.find("void");
-
-
-
-            std::string funcSubString = subString.substr(pos);
-            std::string classSubString = subString.substr(0, pos);
-
-
-            if (funcSubString == str2)
+            std::string classSubString = "";
+            if (str.find(str2) != std::string::npos)
             {
-                std::cout << funcSubString << " == " << str2 << std::endl;
-                if (classSubString == str3)
+                if (str.find(str3) != std::string::npos)
                 {
-
                     if ((type == funcDelegates[i].target<Lambda<std::function<FuncStruct>, Type, Func>>()->type))
                     {
                         if (func == funcDelegates[i].target<Lambda<std::function<FuncStruct>, Type, Func>>()->func)
