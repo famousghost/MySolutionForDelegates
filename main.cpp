@@ -26,18 +26,20 @@ int main() {
     //********* CHARACTER EXAMPLE *********//
 #ifdef CHARACTER_EXAMPLE
     std::cout << "***************************************************\n\nCHARACTER_EXAMPLE:" << std::endl;
-    Worrior worrior(100.0f, 100.0f, 20.0f, 0.2f, HeroType::Melee);
+    Worrior worrior("Worrior1", 100.0f, 100.0f, 20.0f, 0.2f, HeroType::Melee);
+    Worrior worrior2("Worrior2", 100.0f, 10.0f, 50.0f, 0.2f, HeroType::Melee);
     Warlock warlock("warlock1", HeroType::Range);
     Warlock warlock2("warlock2", HeroType::Range);
 
     worrior.Register();
+    worrior2.Register();
     warlock.Register();
     warlock2.Register();
 
     CharacterManager::Instance()->Update();
 
     worrior.Unregister();
-    warlock.Unregister();
+    warlock2.Unregister();
 
     std::cout << "-------------------------------" << std::endl;
 

@@ -1,9 +1,10 @@
 #include "Worrior.h"
 #include "CharacterManager.h"
-#include <string>
+#include <iostream>
 
-Worrior::Worrior(float hp, float mp, float attackPower, float damageReduction, HeroType type)
-    :HP(hp),
+Worrior::Worrior(const std::string& name, float hp, float mp, float attackPower, float damageReduction, HeroType type)
+    :m_name(name),
+    HP(hp),
     MP(mp),
     AttackPower(attackPower),
     DamageReduction(damageReduction),
@@ -27,5 +28,5 @@ void Worrior::Unregister()
 void Worrior::PrintType()
 {
     std::string type = Type == HeroType::Melee ? "Melee" : "Range";
-    std::cout << "Worrior::PrintType = " << type << "\n";
+    std::cout << "(" << m_name << "): " << "Worrior::PrintType = " << type << "\n";
 }
