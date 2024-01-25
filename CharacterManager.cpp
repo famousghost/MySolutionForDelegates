@@ -4,5 +4,9 @@ CharacterManager* CharacterManager::m_instance = nullptr;
 
 void CharacterManager::Update()
 {
-    UpdateCharacters.Invoke();
+    //Previous wrong solution
+    //UpdateCharacters.Invoke();
+
+    //New the best solution
+    UpdateCharactersDelegate.Invoke();
 }

@@ -14,12 +14,14 @@ void Worrior::Register()
 {
     auto* characterManager = CharacterManager::Instance();
     characterManager->UpdateCharacters.Register(this, &ICharacter::PrintType);
+    characterManager->UpdateCharactersDelegate.Register(this, &Worrior::PrintType);
 }
 
 void Worrior::Unregister()
 {
     auto* characterManager = CharacterManager::Instance();
     characterManager->UpdateCharacters.Unregister(this, &ICharacter::PrintType);
+    characterManager->UpdateCharactersDelegate.Unregister(&Worrior::PrintType);
 }
 
 void Worrior::PrintType()

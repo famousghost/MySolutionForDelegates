@@ -14,9 +14,7 @@
 
 using namespace std;
 
-
 int main() {
-
     //********* WORKER EXAMPLE *********//
 #ifdef WORKER_EXAMPLE
     std::cout << "***************************************************\nWORKER_EXAMPLE:" << std::endl;
@@ -24,7 +22,6 @@ int main() {
     workerExample.Update();
 #endif
     //********* WORKER EXAMPLE *********//
-
 
     //********* CHARACTER EXAMPLE *********//
 #ifdef CHARACTER_EXAMPLE
@@ -39,6 +36,11 @@ int main() {
 
     worrior.Unregister();
     warlock.Unregister();
+
+    std::cout << "-------------------------------" << std::endl;
+
+    //Unresgister isnt working properly Fix it
+    CharacterManager::Instance()->Update();
 #endif
     //********* CHARACTER EXAMPLE *********//
     return 0;

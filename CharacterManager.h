@@ -1,6 +1,7 @@
 #pragma once
 #include "Delegates.h"
 #include "ICharacter.h"
+#include <functional>
 
 class CharacterManager
 {
@@ -17,7 +18,11 @@ public:
 
     void Update();
 
+    //Old wrong solution
     DelegateMethod<void(ICharacter::*)()> UpdateCharacters;
+
+    //New best solution
+    Delegate<void()> UpdateCharactersDelegate;
 private:
 
     CharacterManager()

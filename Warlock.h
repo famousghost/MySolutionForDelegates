@@ -5,16 +5,16 @@
 class Warlock : public ICharacter
 {
 public:
-	Warlock(HeroType type);
+    Warlock(HeroType type);
 
-	virtual void Register() override;
+    virtual void Register() override;
 
-	virtual void Unregister() override;
+    virtual void Unregister() override;
 
-	virtual void PrintType() override;
+    virtual void PrintType() override;
+
+    void PrintType2();
 private:
-	
-	HeroType m_type;
 
+    HeroType m_type;
 };
-

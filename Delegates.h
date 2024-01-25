@@ -2,6 +2,8 @@
 #include <vector>
 #include <map>
 #include <type_traits>
+#include <functional>
+#include <iostream>
 
 template<typename R, typename... A>
 R return_type(R(*)(A...));
@@ -118,4 +120,82 @@ public:
 
 private:
     std::map<ClassOf_t<decltype(Func())>*, std::vector<Func>> classDelegates;
+};
+
+template<typename LambdaType, typename Func, typename... Args>
+class Lambda
+{
+public:
+    Lambda(LambdaType lambdaType, Func func)
+        :lambdaType(lambdaType), func(func)
+    {
+    }
+
+    void operator()(Args... args)
+    {
+        lambdaType(args...);
+    }
+
+    bool operator==(const Lambda& lambda)
+    {
+        return this->func == lambda->func;
+    }
+
+    bool operator!=(const Lambda& lambda)
+    {
+        return !operator==(lambda);
+    }
+    LambdaType lambdaType;
+    Func func;
+};
+
+template<typename FuncStruct>
+class Delegate
+{
+public:
+
+    template<typename... Args>
+    void Invoke(Args... args)
+    {
+        for (auto& delegate : funcDelegates)
+        {
+            delegate(args...);
+        }
+    }
+
+    template<typename Type, typename Func, typename... Args>
+    void Register(Type* type, Func func)
+    {
+        auto f = Lambda<std::function<FuncStruct>, Func>([type, func](Args... args) {(type->*func)(args...); }, func);
+        funcDelegates.push_back(f);
+    }
+
+    template<typename Func>
+    void Unregister(Func func)
+    {
+        for (int i = 0; i < funcDelegates.size(); ++i)
+        {
+            std::string str = funcDelegates[i].target_type().name();
+            std::string str2 = typeid(func).name();
+            std::size_t pos = str.find(",");
+            std::string subString = str.substr(pos + 1);
+            subString.pop_back();
+            if (str2 == subString)
+            {
+                if (func == funcDelegates[i].target<Lambda<std::function<FuncStruct>, Func>>()->func)
+                {
+                    funcDelegates[i] = funcDelegates[funcDelegates.size() - 1];
+                    funcDelegates.pop_back();
+                    return;
+                }
+            }
+        }
+    }
+
+    void UnregisterAll()
+    {
+        funcDelegates.clear();
+    }
+private:
+    std::vector<std::function<FuncStruct>> funcDelegates;
 };
