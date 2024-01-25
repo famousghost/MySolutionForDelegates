@@ -122,7 +122,7 @@ private:
     std::map<ClassOf_t<decltype(Func())>*, std::vector<Func>> classDelegates;
 };
 
-template<typename LambdaType, typename Type, typename Func, typename... Args>
+template<typename LambdaType, typename Type, typename Func>
 class Lambda
 {
 public:
@@ -131,6 +131,7 @@ public:
     {
     }
 
+    template<typename... Args>
     void operator()(Args... args)
     {
         lambdaType(args...);
@@ -164,10 +165,11 @@ public:
         }
     }
 
-    template<typename Type, typename Func, typename... Args>
+    template<typename Type, typename Func>
     void Register(Type* type, Func func)
     {
-        auto f = Lambda<std::function<FuncStruct>, Type, Func>([type, func](Args... args) {(type->*func)(args...); }, type, func);
+        auto lambda = [type, func]<typename... Args>(Args... args) { (type->*func)(args...); };
+        auto f = Lambda<std::function<FuncStruct>, Type, Func>(lambda, type, func);
         funcDelegates.push_back(f);
     }
 
@@ -182,13 +184,20 @@ public:
             std::size_t pos = str.find(",");
             std::string subString = str.substr(pos + 1);
             subString.pop_back();
-            pos = subString.find(",");
-            std::string funcSubString = subString.substr(pos + 1);
+            pos = subString.find("void");
+
+
+
+            std::string funcSubString = subString.substr(pos);
             std::string classSubString = subString.substr(0, pos);
+
+
             if (funcSubString == str2)
             {
+                std::cout << funcSubString << " == " << str2 << std::endl;
                 if (classSubString == str3)
                 {
+
                     if ((type == funcDelegates[i].target<Lambda<std::function<FuncStruct>, Type, Func>>()->type))
                     {
                         if (func == funcDelegates[i].target<Lambda<std::function<FuncStruct>, Type, Func>>()->func)

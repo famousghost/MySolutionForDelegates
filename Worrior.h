@@ -15,6 +15,8 @@ public:
 
 	virtual void PrintType() override;
 
+	void Sum(int x, int y);
+
 private:
 	float AttackPower;
 	float HP;

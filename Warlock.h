@@ -14,6 +14,8 @@ public:
     virtual void PrintType() override;
 
     void PrintType2();
+
+    void Sum(int x, int y);
 private:
 
     HeroType m_type;

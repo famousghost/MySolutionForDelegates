@@ -9,4 +9,5 @@ void CharacterManager::Update()
 
     //New the best solution
     UpdateCharactersDelegate.Invoke();
+    SumDelegate.Invoke(10, 20);
 }

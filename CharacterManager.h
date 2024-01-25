@@ -23,6 +23,8 @@ public:
 
     //New best solution
     Delegate<void()> UpdateCharactersDelegate;
+
+    Delegate<void(int, int)> SumDelegate;
 private:
 
     CharacterManager()
