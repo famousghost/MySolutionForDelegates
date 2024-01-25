@@ -21,7 +21,7 @@ void Worrior::Unregister()
 {
     auto* characterManager = CharacterManager::Instance();
     characterManager->UpdateCharacters.Unregister(this, &ICharacter::PrintType);
-    characterManager->UpdateCharactersDelegate.Unregister(&Worrior::PrintType);
+    characterManager->UpdateCharactersDelegate.Unregister(this, &Worrior::PrintType);
 }
 
 void Worrior::PrintType()

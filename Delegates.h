@@ -122,12 +122,12 @@ private:
     std::map<ClassOf_t<decltype(Func())>*, std::vector<Func>> classDelegates;
 };
 
-template<typename LambdaType, typename Func, typename... Args>
+template<typename LambdaType, typename Type, typename Func, typename... Args>
 class Lambda
 {
 public:
-    Lambda(LambdaType lambdaType, Func func)
-        :lambdaType(lambdaType), func(func)
+    Lambda(LambdaType lambdaType, Type* type, Func func)
+        :lambdaType(lambdaType), type(type), func(func)
     {
     }
 
@@ -146,6 +146,7 @@ public:
         return !operator==(lambda);
     }
     LambdaType lambdaType;
+    Type* type;
     Func func;
 };
 
@@ -166,27 +167,37 @@ public:
     template<typename Type, typename Func, typename... Args>
     void Register(Type* type, Func func)
     {
-        auto f = Lambda<std::function<FuncStruct>, Func>([type, func](Args... args) {(type->*func)(args...); }, func);
+        auto f = Lambda<std::function<FuncStruct>, Type, Func>([type, func](Args... args) {(type->*func)(args...); }, type, func);
         funcDelegates.push_back(f);
     }
 
-    template<typename Func>
-    void Unregister(Func func)
+    template<typename Type, typename Func>
+    void Unregister(Type* type, Func func)
     {
         for (int i = 0; i < funcDelegates.size(); ++i)
         {
             std::string str = funcDelegates[i].target_type().name();
             std::string str2 = typeid(func).name();
+            std::string str3 = typeid(*type).name();
             std::size_t pos = str.find(",");
             std::string subString = str.substr(pos + 1);
             subString.pop_back();
-            if (str2 == subString)
+            pos = subString.find(",");
+            std::string funcSubString = subString.substr(pos + 1);
+            std::string classSubString = subString.substr(0, pos);
+            if (funcSubString == str2)
             {
-                if (func == funcDelegates[i].target<Lambda<std::function<FuncStruct>, Func>>()->func)
+                if (classSubString == str3)
                 {
-                    funcDelegates[i] = funcDelegates[funcDelegates.size() - 1];
-                    funcDelegates.pop_back();
-                    return;
+                    if ((type == funcDelegates[i].target<Lambda<std::function<FuncStruct>, Type, Func>>()->type))
+                    {
+                        if (func == funcDelegates[i].target<Lambda<std::function<FuncStruct>, Type, Func>>()->func)
+                        {
+                            funcDelegates[i] = funcDelegates[funcDelegates.size() - 1];
+                            funcDelegates.pop_back();
+                            return;
+                        }
+                    }
                 }
             }
         }

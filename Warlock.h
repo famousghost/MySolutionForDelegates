@@ -1,11 +1,11 @@
 #pragma once
 #include "ICharacter.h"
-#include <iostream>
+#include <string>
 
 class Warlock : public ICharacter
 {
 public:
-    Warlock(HeroType type);
+    Warlock(const std::string& name, HeroType type);
 
     virtual void Register() override;
 
@@ -17,4 +17,5 @@ public:
 private:
 
     HeroType m_type;
+    std::string m_name;
 };
