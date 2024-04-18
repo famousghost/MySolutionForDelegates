@@ -168,7 +168,7 @@ public:
     template<typename Type, typename Func>
     void Register(Type* type, Func func)
     {
-        auto lambda = [type, func]<typename... Args>(Args... args) { (type->*func)(args...); };
+        auto lambda = [type, func](auto... args) { (type->*func)(args...); };
         auto f = Lambda<std::function<FuncStruct>, Type, Func>(lambda, type, func);
         funcDelegates.push_back(f);
     }
