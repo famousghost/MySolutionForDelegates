@@ -11,8 +11,8 @@
 ## Unregister Methods
 ### delegateName.REGISTER_METHOD(this, &A::Method) -> registering any method
 ### delegateName.REGISTER_FUNC(func) -> registering any func
-## Invoke
+## Invoke Methods
 ### delegateName.Invoke({arguments...})
-### auto values = delegateName({arguments...})
+### auto values = delegateName.InvokeRet({arguments...})
 		
 @copyright Marcin Czekaj
