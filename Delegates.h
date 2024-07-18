@@ -186,7 +186,7 @@ public:
     template<typename... Args>
     auto InvokeRet(Args&&... args)
     {
-        std::vector<decltype(m_funcs)::value_type::ReturnType> m_values;
+        std::vector<typename decltype(m_funcs)::value_type::ReturnType> m_values;
         for (auto& func : m_funcs)
         {
             m_values.push_back(func(std::forward<Args>(args)...));
