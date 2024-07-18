@@ -17,6 +17,11 @@ void func3()
     std::cout << "func3()" << std::endl;
 }
 
+int getMul(int x, int y)
+{
+    return x * y;
+}
+
 namespace A
 {
     void f()
@@ -51,7 +56,7 @@ void WorkerExample::Update()
     manager.UpdateCustomerInfo.REGISTER_FUNC(A::f);
     manager.UpdateCustomerInfo.REGISTER_FUNC(B::f);
     manager.UpdateCustomerInfo.REGISTER_FUNC(C::f);
-
+    manager.retUpdate.REGISTER_FUNC(getMul);
     Worker worker1(1);
 
     worker1.RegisterAtWork(manager);

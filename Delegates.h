@@ -12,6 +12,8 @@ template<typename RetType, typename... Args>
 struct Function<RetType(Args...)>
 {
 public:
+    using ReturnType = RetType;
+
     template<typename F>
     Function(F f, const std::string& p_name, size_t p_typeAddress, size_t p_funcAddress)
         :m_func(new Func<F>(std::forward<F>(f))),
@@ -22,9 +24,9 @@ public:
 
     }
 
-    void operator()(Args&&... args)
+    RetType operator()(Args&&... args)
     {
-        (*m_func)(std::forward<Args>(args)...);
+        return (*m_func)(std::forward<Args>(args)...);
     }
 
     size_t GetFuncAddress() const
@@ -59,7 +61,7 @@ private:
         }
         RetType operator()(Args&&... args)
         {
-            f(std::forward<Args>(args)...);
+            return f(std::forward<Args>(args)...);
         }
         F f;
     };
@@ -86,7 +88,7 @@ public:
         int index = 0;
         if(!CheckIfMethodExists(type, func, name, index))
         {
-            auto lambda = [type, func](auto&&... args) {(type->*func)(std::forward<decltype(args)&&>(args)...); };
+            auto lambda = [type, func](auto&&... args) {return (type->*func)(std::forward<decltype(args)&&>(args)...); };
             m_funcs.push_back(Function<F>{lambda, name, (size_t)type, 0});
         }
     }
@@ -101,7 +103,7 @@ public:
         int index = 0;
         if (!CheckIfFuncExists(func, name, index))
         {
-            auto lambda = [func](auto&&... args) {func(std::forward<decltype(args)&&>(args)...); };
+            auto lambda = [func](auto&&... args) {return func(std::forward<decltype(args)&&>(args)...); };
             m_funcs.push_back(Function<F>{lambda, name, 0, (size_t)(func)});
         }
     }
@@ -180,6 +182,18 @@ public:
             func(std::forward<Args>(args)...);
         }
     }
+    
+    template<typename... Args>
+    auto InvokeRet(Args&&... args)
+    {
+        std::vector<decltype(m_funcs)::value_type::ReturnType> m_values;
+        for (auto& func : m_funcs)
+        {
+            m_values.push_back(func(std::forward<Args>(args)...));
+        }
+        return m_values;
+    }
+
 private:
     std::vector<Function<F>> m_funcs;
 };

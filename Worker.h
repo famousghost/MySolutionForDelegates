@@ -17,6 +17,8 @@ public:
     void DoWork();
 
     void DoBreak();
+
+    int GetSum(int x, int y);
 private:
     int workerID;
 };
