@@ -10,8 +10,6 @@ public:
 
     Worker(int id);
 
-    int Result(int x);
-
     void RegisterAtWork(WorkerManager<Worker>& manager);
 
     void UnRegisterFromWork(WorkerManager<Worker>& manager);

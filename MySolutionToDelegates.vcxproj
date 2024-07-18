@@ -141,7 +141,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CharacterManager.cpp" />
-    <ClCompile Include="Delegates.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Warlock.cpp" />
     <ClCompile Include="Worker.cpp" />

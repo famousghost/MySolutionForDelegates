@@ -10,19 +10,17 @@ Warlock::Warlock(const std::string& name, HeroType type)
 void Warlock::Register()
 {
     auto* characterManager = CharacterManager::Instance();
-    characterManager->UpdateCharacters.Register(this, &ICharacter::PrintType);
-    characterManager->UpdateCharactersDelegate.Register(this, &Warlock::PrintType);
-    characterManager->UpdateCharactersDelegate.Register(this, &Warlock::PrintType2);
-    characterManager->SumDelegate.Register(this, &Warlock::Sum);
+    characterManager->UpdateCharactersDelegate.REGISTER_METHOD(this, &Warlock::PrintType);
+    characterManager->UpdateCharactersDelegate.REGISTER_METHOD(this, &Warlock::PrintType2);
+    characterManager->SumDelegate.REGISTER_METHOD(this, &Warlock::Sum);
 }
 
 void Warlock::Unregister()
 {
     auto* characterManager = CharacterManager::Instance();
-    characterManager->UpdateCharacters.Unregister(this, &ICharacter::PrintType);
-    characterManager->UpdateCharactersDelegate.Unregister(this, &Warlock::PrintType);
-    characterManager->UpdateCharactersDelegate.Unregister(this, &Warlock::PrintType2);
-    characterManager->SumDelegate.Unregister(this, &Warlock::Sum);
+    characterManager->UpdateCharactersDelegate.UNREGISTER_METHOD(this, &Warlock::PrintType);
+    characterManager->UpdateCharactersDelegate.UNREGISTER_METHOD(this, &Warlock::PrintType2);
+    characterManager->SumDelegate.UNREGISTER_METHOD(this, &Warlock::Sum);
 }
 
 void Warlock::PrintType()

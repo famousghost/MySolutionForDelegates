@@ -18,9 +18,6 @@ public:
 
     void Update();
 
-    //Old wrong solution
-    DelegateMethod<void(ICharacter::*)()> UpdateCharacters;
-
     //New best solution
     Delegate<void()> UpdateCharactersDelegate;
 

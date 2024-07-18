@@ -4,10 +4,7 @@ CharacterManager* CharacterManager::m_instance = nullptr;
 
 void CharacterManager::Update()
 {
-    //Previous wrong solution
-    //UpdateCharacters.Invoke();
-
     //New the best solution
     UpdateCharactersDelegate.Invoke();
-    SumDelegate.Invoke(10, 20);
+    SumDelegate.Invoke(10, 40);
 }

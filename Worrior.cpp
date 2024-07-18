@@ -14,17 +14,15 @@ Worrior::Worrior(const std::string& name, float hp, float mp, float attackPower,
 void Worrior::Register()
 {
     auto* characterManager = CharacterManager::Instance();
-    characterManager->UpdateCharacters.Register(this, &ICharacter::PrintType);
-    characterManager->UpdateCharactersDelegate.Register(this, &Worrior::PrintType);
-    characterManager->SumDelegate.Register(this, &Worrior::Sum);
+    characterManager->UpdateCharactersDelegate.REGISTER_METHOD(this, &Worrior::PrintType);
+    characterManager->SumDelegate.REGISTER_METHOD(this, &Worrior::Sum);
 }
 
 void Worrior::Unregister()
 {
     auto* characterManager = CharacterManager::Instance();
-    characterManager->UpdateCharacters.Unregister(this, &ICharacter::PrintType);
-    characterManager->UpdateCharactersDelegate.Unregister(this, &Worrior::PrintType);
-    characterManager->SumDelegate.Unregister(this, &Worrior::Sum);
+    characterManager->UpdateCharactersDelegate.UNREGISTER_METHOD(this, &Worrior::PrintType);
+    characterManager->SumDelegate.UNREGISTER_METHOD(this, &Worrior::Sum);
 }
 
 void Worrior::PrintType()

@@ -16,9 +16,6 @@
     <Filter Include="Pliki źródłowe\WorkerExample">
       <UniqueIdentifier>{4e844d67-838b-4841-97d1-1ec495066977}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Pliki nagłówkowe\WorkerExample">
-      <UniqueIdentifier>{86af6eda-0fde-495d-acd8-7256b005704f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Pliki nagłówkowe\CharacterExample">
       <UniqueIdentifier>{2c3513f3-c7c1-408c-9c1c-7ebd4fad5e71}</UniqueIdentifier>
     </Filter>
@@ -40,12 +37,12 @@
     <Filter Include="Pliki nagłówkowe\CharacterExample\Managers">
       <UniqueIdentifier>{1da2d6b4-3da4-40e8-bf89-4cfe66a0df5c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pliki nagłówkowe\WorkerExample">
+      <UniqueIdentifier>{cd67d692-61af-451f-bfcd-5e30962471c6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
-      <Filter>Pliki źródłowe</Filter>
-    </ClCompile>
-    <ClCompile Include="Delegates.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
     <ClCompile Include="Worker.cpp">
@@ -71,15 +68,6 @@
     <ClInclude Include="Delegates.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="WorkerManager.h">
-      <Filter>Pliki nagłówkowe\WorkerExample</Filter>
-    </ClInclude>
-    <ClInclude Include="WorkerExample.h">
-      <Filter>Pliki nagłówkowe\WorkerExample</Filter>
-    </ClInclude>
-    <ClInclude Include="Worker.h">
-      <Filter>Pliki nagłówkowe\WorkerExample</Filter>
-    </ClInclude>
     <ClInclude Include="Worrior.h">
       <Filter>Pliki nagłówkowe\CharacterExample\Characters</Filter>
     </ClInclude>
@@ -91,6 +79,15 @@
     </ClInclude>
     <ClInclude Include="Warlock.h">
       <Filter>Pliki nagłówkowe\CharacterExample\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="Worker.h">
+      <Filter>Pliki nagłówkowe\WorkerExample</Filter>
+    </ClInclude>
+    <ClInclude Include="WorkerExample.h">
+      <Filter>Pliki nagłówkowe\WorkerExample</Filter>
+    </ClInclude>
+    <ClInclude Include="WorkerManager.h">
+      <Filter>Pliki nagłówkowe\WorkerExample</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

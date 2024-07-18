@@ -17,25 +17,40 @@ void func3()
     std::cout << "func3()" << std::endl;
 }
 
-int Result(int x)
+namespace A
 {
-    return 10 * x;
+    void f()
+    {
+        std::cout << "A::f()\n";
+    }
 }
 
-int Result2(int x)
+namespace B
 {
-    return 20 * x;
+    void f()
+    {
+        std::cout << "B::f()\n";
+    }
+}
+
+namespace C
+{
+    void f()
+    {
+        std::cout << "C::f()\n";
+    }
 }
 
 void WorkerExample::Update()
 {
     WorkerManager<Worker> manager;
 
-    manager.funcUpdateClinetsInformation.Register(func);
-    manager.funcUpdateClinetsInformation.Register(func2);
-    manager.funcUpdateClinetsInformation.Register(func3);
-    manager.checkFunctionDelegate.Register(Result);
-    manager.checkFunctionDelegate.Register(Result2);
+    manager.UpdateCustomerInfo.REGISTER_FUNC(func);
+    manager.UpdateCustomerInfo.REGISTER_FUNC(func2);
+    manager.UpdateCustomerInfo.REGISTER_FUNC(func3);
+    manager.UpdateCustomerInfo.REGISTER_FUNC(A::f);
+    manager.UpdateCustomerInfo.REGISTER_FUNC(B::f);
+    manager.UpdateCustomerInfo.REGISTER_FUNC(C::f);
 
     Worker worker1(1);
 
@@ -51,16 +66,21 @@ void WorkerExample::Update()
 
     manager.Update();
 
-    manager.funcUpdateClinetsInformation.Unregister(func);
+    manager.UpdateCustomerInfo.UNREGISTER_FUNC(func);
+    manager.UpdateCustomerInfo.UNREGISTER_FUNC(B::f);
 
-    worker1.UnRegisterFromWork(manager);
-
-    manager.checkFunctionDelegate.Unregister(Result2);
+    worker2.UnRegisterFromWork(manager);
 
     std::cout << "---------------------------" << std::endl;
 
     manager.Update();
 
-    manager.funcUpdateClinetsInformation.Unregister(func2);
-    manager.funcUpdateClinetsInformation.Unregister(func3);
+    manager.UpdateCustomerInfo.UNREGISTER_FUNC(func2);
+    manager.UpdateCustomerInfo.UNREGISTER_FUNC(func3);
+
+    worker1.UnRegisterFromWork(manager);
+
+    std::cout << "---------------------------" << std::endl;
+
+    manager.Update();
 }

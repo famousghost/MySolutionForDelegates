@@ -1,209 +1,185 @@
-#pragma once
-#include <vector>
-#include <map>
-#include <type_traits>
-#include <functional>
 #include <iostream>
-
-template<typename R, typename... A>
-R return_type(R(*)(A...));
-
-template<typename C, typename R, typename... A>
-R return_type(R(C::*)(A...));
-
-template<typename T>
-struct ClassOf {};
-
-template<typename Return, typename Class, typename... Args>
-struct ClassOf < Return(Class::*)(Args...) > {
-    using type = Class;
-};
-
-template< typename T>
-using ClassOf_t = typename ClassOf<T>::type;
+#include <memory>
+#include <vector>
 
 template<typename Func>
-class DelegateFunc
+struct Function
+{
+
+};
+
+template<typename RetType, typename... Args>
+struct Function<RetType(Args...)>
 {
 public:
-
-    template<typename... Args>
-    void Invoke(Args... args)
+    template<typename F>
+    Function(F f, const std::string& p_name, size_t p_typeAddress, size_t p_funcAddress)
+        :m_func(new Func<F>(std::forward<F>(f))),
+        m_name(p_name),
+        m_typeAddress(p_typeAddress),
+        m_funcAddress(p_funcAddress)
     {
-        for (auto& delegate : funcDelegates)
-        {
-            delegate(args...);
-        }
+
     }
 
-    void Register(Func func)
+    void operator()(Args&&... args)
     {
-        funcDelegates.push_back(func);
+        (*m_func)(std::forward<Args>(args)...);
     }
 
-    template<typename... Args>
-    std::vector<decltype(return_type(Func()))> InvokeRet(Args... args)
+    size_t GetFuncAddress() const
     {
-        std::vector<decltype(return_type(Func()))> result;
-        for (auto& delegate : funcDelegates)
-        {
-            result.push_back(delegate(args...));
-        }
-        return result;
+        return m_funcAddress;
     }
 
-    void Unregister(Func func)
+    size_t GetTypeAddress() const
     {
-        for (int i = 0; i < funcDelegates.size(); ++i)
-        {
-            if (func == funcDelegates[i])
-            {
-                funcDelegates[i] = funcDelegates[funcDelegates.size() - 1];
-                funcDelegates.pop_back();
-                return;
-            }
-        }
+        return m_typeAddress;
+    }
+
+    std::string GetName() const
+    {
+        return m_name;
     }
 private:
-    std::vector<Func> funcDelegates;
+
+    struct Concept
+    {
+        virtual ~Concept() {}
+        virtual RetType operator()(Args&&... args) = 0;
+    };
+
+    template<typename F>
+    struct Func : public Concept
+    {
+        Func(F&& f)
+            :f(std::forward<F>(f))
+        {
+
+        }
+        RetType operator()(Args&&... args)
+        {
+            f(std::forward<Args>(args)...);
+        }
+        F f;
+    };
+    std::unique_ptr<Concept> m_func;
+    std::string m_name;
+    size_t m_typeAddress;
+    size_t m_funcAddress;
 };
 
-template<typename Func>
-class DelegateMethod
-{
-public:
-    template<typename... Args>
-    void Invoke(Args... args)
-    {
-        for (auto& delegate : classDelegates)
-        {
-            for (auto& func : delegate.second)
-            {
-                (delegate.first->*func)(args...);
-            }
-        }
-    }
-
-    template<typename... Args>
-    std::vector<decltype(return_type(Func()))> InvokeRet(Args... args)
-    {
-        std::vector<decltype(return_type(Func()))> result;
-        for (auto& delegate : classDelegates)
-        {
-            for (auto& func : delegate.second)
-            {
-                result.push_back((delegate.first->*func)(args...));
-            }
-        }
-        return result;
-    }
-
-    void Register(ClassOf_t<decltype(Func())>* type, Func func)
-    {
-        classDelegates[type].push_back(func);
-    }
-
-    void Unregister(ClassOf_t<decltype(Func())>* type, Func func)
-    {
-        auto it = classDelegates.find(type);
-
-        for (int i = 0; i < it->second.size(); ++i)
-        {
-            if (func == it->second[i])
-            {
-                it->second[i] = it->second[it->second.size() - 1];
-                it->second.pop_back();
-                return;
-            }
-        }
-    }
-
-private:
-    std::map<ClassOf_t<decltype(Func())>*, std::vector<Func>> classDelegates;
-};
-
-template<typename LambdaType, typename Type, typename Func>
-class Lambda
-{
-public:
-    Lambda(LambdaType lambdaType, Type* type, Func func)
-        :lambdaType(lambdaType), type(type), func(func)
-    {
-    }
-
-    template<typename... Args>
-    void operator()(Args... args)
-    {
-        lambdaType(args...);
-    }
-
-    bool operator==(const Lambda& lambda)
-    {
-        return this->func == lambda->func;
-    }
-
-    bool operator!=(const Lambda& lambda)
-    {
-        return !operator==(lambda);
-    }
-    LambdaType lambdaType;
-    Type* type;
-    Func func;
-};
-
-template<typename FuncStruct>
+template<typename F>
 class Delegate
 {
 public:
+#define REGISTER_METHOD(CLASS_TYPE, FUNC)\
+            Register(CLASS_TYPE, FUNC, #FUNC)\
 
-    template<typename... Args>
-    void Invoke(Args... args)
+    template<typename ClassType, typename Func>
+    void Register(ClassType* type, Func func, const std::string& p_functionName)
     {
-        for (auto& delegate : funcDelegates)
+        std::string name = typeid(ClassType).name();
+        name += typeid(Func).name();
+        name += p_functionName;
+
+        int index = 0;
+        if(!CheckIfMethodExists(type, func, name, index))
         {
-            delegate(args...);
+            auto lambda = [type, func](auto&&... args) {(type->*func)(std::forward<decltype(args)&&>(args)...); };
+            m_funcs.push_back(Function<F>{lambda, name, (size_t)type, 0});
         }
     }
 
-    template<typename Type, typename Func>
-    void Register(Type* type, Func func)
+#define REGISTER_FUNC(FUNC)\
+            Register(FUNC, #FUNC)\
+
+    void Register(F func, const std::string& p_functionName)
     {
-        auto lambda = [type, func](auto... args) { (type->*func)(args...); };
-        auto f = Lambda<std::function<FuncStruct>, Type, Func>(lambda, type, func);
-        funcDelegates.push_back(f);
+        std::string name = typeid(F).name();
+        name += p_functionName;
+        int index = 0;
+        if (!CheckIfFuncExists(func, name, index))
+        {
+            auto lambda = [func](auto&&... args) {func(std::forward<decltype(args)&&>(args)...); };
+            m_funcs.push_back(Function<F>{lambda, name, 0, (size_t)(func)});
+        }
     }
 
-    template<typename Type, typename Func>
-    void Unregister(Type* type, Func func)
+#define UNREGISTER_METHOD(CLASS_TYPE, FUNC)\
+            Unregister(CLASS_TYPE, FUNC, #FUNC)\
+
+    template<typename ClassType, typename Func>
+    void Unregister(ClassType* type, Func func, const std::string& p_functionName)
     {
-        for (int i = 0; i < funcDelegates.size(); ++i)
+        std::string name = typeid(ClassType).name();
+        name += typeid(Func).name();
+        name += p_functionName;
+        int index = 0;
+        if (CheckIfMethodExists(type, func, name, index))
         {
-            std::string str = funcDelegates[i].target_type().name();
-            std::string str2 = typeid(func).name();
-            std::string str3 = typeid(*type).name();
-            std::string classSubString = "";
-            if (str.find(str2) != std::string::npos)
+            m_funcs.erase(m_funcs.begin() + index);
+        }
+    }
+
+#define UNREGISTER_FUNC(FUNC)\
+            Unregister(FUNC, #FUNC)
+
+    void Unregister(F func, const std::string& p_functionName)
+    {
+        std::string name = typeid(F).name();
+        name += p_functionName;
+        int index = 0;
+        bool found = CheckIfFuncExists(func, name, index);
+        if (found)
+        {
+            m_funcs.erase(m_funcs.begin() + index);
+        }
+    }
+
+    template<typename ClassType, typename Func>
+    bool CheckIfMethodExists(ClassType* type, Func func, const std::string& p_name, int& index)
+    {
+        for (int i = 0; i < m_funcs.size(); ++i)
+        {
+            if (m_funcs[i].GetName() == p_name
+                && m_funcs[i].GetTypeAddress() == (size_t)type)
             {
-                if (str.find(str3) != std::string::npos)
-                {
-                    if ((type == funcDelegates[i].target<Lambda<std::function<FuncStruct>, Type, Func>>()->type))
-                    {
-                        if (func == funcDelegates[i].target<Lambda<std::function<FuncStruct>, Type, Func>>()->func)
-                        {
-                            funcDelegates[i] = funcDelegates[funcDelegates.size() - 1];
-                            funcDelegates.pop_back();
-                            return;
-                        }
-                    }
-                }
+                return true;
             }
+            index++;
         }
+        return false;
+    }
+
+    template<typename Func>
+    bool CheckIfFuncExists(Func func, const std::string& p_name, int& index)
+    {
+        for (int i = 0; i < m_funcs.size(); ++i)
+        {
+            if (m_funcs[i].GetName() == p_name
+                && m_funcs[i].GetFuncAddress() == (size_t)func)
+            {
+                return true;
+            }
+            index++;
+        }
+        return false;
     }
 
     void UnregisterAll()
     {
-        funcDelegates.clear();
+        m_funcs.clear();
+    }
+
+    template<typename... Args>
+    void Invoke(Args&&... args)
+    {
+        for (auto& func : m_funcs)
+        {
+            func(std::forward<Args>(args)...);
+        }
     }
 private:
-    std::vector<std::function<FuncStruct>> funcDelegates;
+    std::vector<Function<F>> m_funcs;
 };

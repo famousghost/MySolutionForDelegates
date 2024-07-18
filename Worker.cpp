@@ -4,23 +4,16 @@ Worker::Worker(int id)
     :workerID(id)
 {}
 
-int Worker::Result(int x)
-{
-    return 20 * x;
-}
-
 void Worker::RegisterAtWork(WorkerManager<Worker>& manager)
 {
-    manager.classUpdateClinetsInformation.Register(this, &Worker::DoWork);
-    manager.classUpdateClinetsInformation.Register(this, &Worker::DoBreak);
-    manager.checkMethodDelegate.Register(this, &Worker::Result);
+    manager.UpdateCustomerInfo.REGISTER_METHOD(this, &Worker::DoWork);
+    manager.UpdateCustomerInfo.REGISTER_METHOD(this, &Worker::DoBreak);
 }
 
 void Worker::UnRegisterFromWork(WorkerManager<Worker>& manager)
 {
-    manager.classUpdateClinetsInformation.Unregister(this, &Worker::DoWork);
-    manager.classUpdateClinetsInformation.Unregister(this, &Worker::DoBreak);
-    manager.checkMethodDelegate.Unregister(this, &Worker::Result);
+    manager.UpdateCustomerInfo.UNREGISTER_METHOD(this, &Worker::DoWork);
+    manager.UpdateCustomerInfo.UNREGISTER_METHOD(this, &Worker::DoBreak);
 }
 
 void Worker::DoWork()
