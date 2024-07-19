@@ -54,6 +54,11 @@ struct X
     }
 };
 
+void WorkerExample::Display()
+{
+    std::cout << "WorkerExample::Display()\n";
+}
+
 void WorkerExample::Update()
 {
     X x;
@@ -69,6 +74,7 @@ void WorkerExample::Update()
     auto lambda = []() {std::cout << "Lambda Test\n"; };
     manager.UpdateCustomerInfo.REGISTER_FUNC(lambda);
     manager.UpdateCustomerInfo.REGISTER_METHOD(&x, &X::operator());
+    manager.UpdateCustomerInfo.REGISTER_FUNC(&WorkerExample::Display);
     Worker worker1(1);
 
     worker1.RegisterAtWork(manager);
@@ -87,6 +93,7 @@ void WorkerExample::Update()
     manager.UpdateCustomerInfo.UNREGISTER_FUNC(B::f);
     manager.UpdateCustomerInfo.UNREGISTER_FUNC(lambda);
     manager.UpdateCustomerInfo.UNREGISTER_METHOD(&x, &X::operator());
+    manager.UpdateCustomerInfo.UNREGISTER_FUNC(&WorkerExample::Display);
         
     worker2.UnRegisterFromWork(manager);
 
